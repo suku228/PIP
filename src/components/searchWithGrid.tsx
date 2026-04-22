@@ -5,8 +5,9 @@ import { GridComponent } from './grid.component';
 export const SearchWithGrid: React.FC = () =>{
 
     const [searchTerm, setSearchTerm] = React.useState('');
+
     return(<>
     <SearchComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-    <GridComponent searchTerm={searchTerm} />
+    {searchTerm.trim() !== '' && <GridComponent searchTerm={searchTerm} />}
     </>)
 }

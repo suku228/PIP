@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import type { ISearchComponentProps } from '../types/ISearxhComponent';
 
 
 
-export const SearchComponent: React.FC<ISearchComponentProps> = ({ searchTerm, setSearchTerm }) => {
+export const SearchComponent: React.FC<ISearchComponentProps> = ({ setSearchTerm }) => {
+
+  const [text, setText] = React.useState('');
+
+  useEffect(() => {
+    console.log('SearchComponent useEffect triggered with text:', text);
+  },[text, setSearchTerm]);
   return (
     <>
       <div className="search">
@@ -11,8 +17,8 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({ searchTerm, s
           type="text" 
           placeholder="Search..." 
           className="search-input"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
         />
       </div>
     </>
