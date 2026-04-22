@@ -1,15 +1,19 @@
 import React, { useEffect } from 'react'
 import type { ISearchComponentProps } from '../types/ISearxhComponent';
+import useDebounce from '../hooks/useDebounce';
 
 
 
-export const SearchComponent: React.FC<ISearchComponentProps> = ({ setSearchTerm }) => {
+export const SearchComponent: React.FC<ISearchComponentProps> = React.memo(({ setSearchTerm }) => {
 
   const [text, setText] = React.useState('');
 
+  const debouncedText = useDebounce<string>(text, 500);
+
   useEffect(() => {
-    console.log('SearchComponent useEffect triggered with text:', text);
-  },[text, setSearchTerm]);
+    setSearchTerm(debouncedText);
+  }, [debouncedText, setSearchTerm]);
+  
   return (
     <>
       <div className="search">
@@ -23,4 +27,4 @@ export const SearchComponent: React.FC<ISearchComponentProps> = ({ setSearchTerm
       </div>
     </>
   );
-};
+});
