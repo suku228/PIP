@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import type { IUserProps } from "../types/IUserProps";
 import "./styles/grid.component.css";
 import { useFetch } from "../hooks/useFetch";
@@ -10,9 +10,14 @@ import { throttle } from "../helpers/throattle";
 
 export const GridComponent: React.FC<{ searchTerm: string }> = React.memo(
   ({ searchTerm }) => {
-    const { data, loading } = useFetch(USERS_URL, searchTerm);
-    const userData: IUserProps[] = (data as IUserProps[]) || [];
     const gridRef = React.useRef<HTMLDivElement>(null);
+    const [pageOffset, setPageOffset] = React.useState(0);
+    const { data, loading } = useFetch(USERS_URL, searchTerm, pageOffset);
+    const userData: IUserProps[] = (data as IUserProps[]) || [];
+
+    useEffect(() => {
+      setPageOffset(0);
+    }, [searchTerm]);
 
     React.useEffect(() => {
       const el = gridRef.current;
@@ -23,26 +28,24 @@ export const GridComponent: React.FC<{ searchTerm: string }> = React.memo(
         const visibleHeight = el.clientHeight; // visible box height (viewport of the div)
         const currentScroll = el.scrollTop; // how far user has scrolled from top
 
-        console.log({
+        // Optional: detect if user reached bottom
+        const isAtBottom = currentScroll + visibleHeight >= totalHeight - 50;
+        console.log("Scroll event:", {
           totalHeight,
           visibleHeight,
           currentScroll,
+          isAtBottom,
         });
-
-        // Optional: detect if user reached bottom
-        const isAtBottom = currentScroll + visibleHeight >= totalHeight - 10;
-        if (isAtBottom) {
+        if (isAtBottom && currentScroll !== 0) {
           console.log("📦 Reached bottom — load more?");
+          setPageOffset((prev) => prev + 1);
         }
       };
 
-      const throattledHandleScroll = throttle(handleScroll, 400);
+      const throattledHandleScroll = throttle(handleScroll, 200);
       el.addEventListener("scroll", throattledHandleScroll);
 
       handleScroll();
-
-      console.log("📊 GridComponent scroll listener attached");
-
       return () => {
         el.removeEventListener("scroll", throattledHandleScroll);
       };
@@ -58,8 +61,8 @@ export const GridComponent: React.FC<{ searchTerm: string }> = React.memo(
             </>
           ) : (
             <div className="card-grid">
-              {userData.map((user) => (
-                <div key={user.id} className="card">
+              {userData.map((user, index) => (
+                <div key={index} className="card">
                   <div className="card-header">
                     <h3 className="card-title">{user.name}</h3>
                   </div>

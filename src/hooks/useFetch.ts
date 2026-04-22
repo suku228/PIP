@@ -10,16 +10,23 @@ interface UseFetchState<T> {
 export const useFetch = <T>(
   url: string | null,
   searchTerm: string = "",
+  pageOffset: number = 0,
 ): UseFetchState<T[]> => {
-
   const [data, setData] = useState<T[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
-
   useEffect(() => {
-    console.log("useFetch triggered with url:", url, "and searchTerm:", searchTerm);
-    if (!url || searchTerm.trim() === "") { setData(null); return;}
+    console.log(
+      "useFetch triggered with url:",
+      url,
+      "and searchTerm:",
+      searchTerm,
+    );
+    if (!url || searchTerm.trim() === "") {
+      setData(null);
+      return;
+    }
 
     const abortController = new AbortController();
     const signal = abortController.signal;
@@ -45,7 +52,11 @@ export const useFetch = <T>(
         }
 
         const result = filteredResults.slice(0, 10);
-        setData(result as T[]);
+        setData((prev) =>
+          pageOffset > 0 && prev
+            ? ([...prev, ...result] as T[])
+            : (result as T[]),
+        );
       } catch (err) {
         if (err instanceof Error && err.name !== "AbortError") {
           setError(err);
@@ -60,7 +71,7 @@ export const useFetch = <T>(
     return () => {
       abortController.abort();
     };
-  }, [url, searchTerm]);
+  }, [url, searchTerm, pageOffset]);
 
   return { data, loading, error };
 };
