@@ -1,5 +1,5 @@
 import { useEffect,  type RefObject } from "react";
-import { throttle } from "../helpers/throattle";
+// import { throttle } from "../helpers/throattle";
 
 interface IntersectionOptions {
   root?: RefObject<HTMLDivElement | null>;
@@ -15,7 +15,7 @@ export const useIntersectionObserver = (
 ): void => {
   const {
     root,
-    rootMargin = "100px 0px 0px 0px",
+    rootMargin = "100px",
     threshold = 1.0,
     throttleDelay = 1000,
   } = options;

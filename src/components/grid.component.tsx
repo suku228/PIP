@@ -33,7 +33,7 @@ export const GridComponent: React.FC<{ searchTerm: string }> = React.memo(
 
     useIntersectionObserver(loadMoreRef, handleIntersection, {
       root: gridRef,
-      rootMargin: "100px",
+      rootMargin: "0px",
       threshold: 1.0,
     });
 
