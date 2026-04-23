@@ -1,19 +1,25 @@
-import React from 'react'
-// import { SearchComponent } from './search.component';
-import { GridComponent } from './grid.component';
-import SearchInput from './search.component1';
+import React from "react";
+import { GridComponent } from "./grid.component";
+import SearchInput from "./search.component1";
 
-export const SearchWithGrid: React.FC = () =>{
+export const SearchWithGrid: React.FC<{ onSearchToggler: () => void }> = ({ onSearchToggler }) => {
+  const [searchTerm, setSearchTerm] = React.useState("");
 
-    const [searchTerm, setSearchTerm] = React.useState('');
+  const onSearch = (term: string) => {
+    setSearchTerm(term);
+  };
 
-    const onSearch = (term: string) => {
-        console.log("SearchWithGrid onSearch called with term:", term);
-        setSearchTerm(term);
-    }
-
-    return(<>
-    <SearchInput setSearchTerm={setSearchTerm} onSearch={onSearch} />
-    {searchTerm.trim() !== '' && <GridComponent searchTerm={searchTerm} />}
-    </>)
-}
+  return (
+    <>
+      <button
+        className="search__back-btn"
+        onClick={onSearchToggler}
+        aria-label="Go back"
+      >
+        Go back
+      </button>
+      <SearchInput setSearchTerm={setSearchTerm} onSearch={onSearch} />
+      {searchTerm.trim() !== "" && <GridComponent searchTerm={searchTerm} />}
+    </>
+  );
+};
