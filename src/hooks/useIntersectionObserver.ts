@@ -24,6 +24,11 @@ export const useIntersectionObserver = (
     const el = targetRef.current;
     if (!el) return;
 
+    //  const throttledFn = throttle(
+    //   (entries: IntersectionObserverEntry[]) => callback(entries),
+    //   throttleDelay,
+    // );
+
     const observer = new IntersectionObserver(callback, {
       root: root?.current ?? null,
       rootMargin,
