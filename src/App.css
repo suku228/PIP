@@ -1,10 +1,12 @@
-  :root {
+:root {
   --top-bar-height: 6.375rem; /* 70px */
 }
 
-.search__back-btn {    
+.search__back-btn {
   float: right;
-    background-color: blue;
-    color: white;
-    border-radius: 5px;
+  background-color: blue;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
 }
