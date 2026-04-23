@@ -5,7 +5,7 @@ const useDebounce = <T,>(value: T, delay: number = 500): T => {
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedValue(value), delay);
-    return () => clearTimeout(timer); // ✅ clears on every keystroke
+    return () => clearTimeout(timer); //  clears on every keystroke
   }, [value, delay]);
 
   return debouncedValue;

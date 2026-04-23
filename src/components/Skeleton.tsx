@@ -3,8 +3,7 @@ import React from "react";
 export const Skeleton = () => {
   return (
     <>
-      <div className="grid">
-        <div className="card-grid">
+        <div className="card-grid skeleton-card-grid">
           {Array.from({ length: 5 }).map((_, i) => (
             <div className="card" key={i}>
               <div className="card-header"></div>
@@ -25,7 +24,6 @@ export const Skeleton = () => {
             </div>
           ))}
         </div>
-      </div>
     </>
   );
 };
