@@ -2,7 +2,7 @@ import React from "react";
 import "./styles/default-screen.css";
 
 interface DefaultScreenProps {
-  recentSearches: string[];
+  recentSearches: { trim: string; full: string }[];
   onSearchToggler: () => void;
 }
 
@@ -27,8 +27,9 @@ export const DefaultScreen: React.FC<DefaultScreenProps> = ({
               <button
                 key={index}
                 className="chip"
+                title={term.full}
               >
-                 {term}
+                 {term.trim}
               </button>
             ))}
           </div>

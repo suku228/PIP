@@ -8,10 +8,17 @@ import { loadSuggestions } from "./helpers/loadSuggestions";
 
 function App() {
   const [isDefaultScreen, setIsDefaultScreen] = React.useState(true);
-  const recentSearches: string[] = useMemo(() => loadSuggestions(STORAGE_KEY), []);
+  const recentSearches: { trim: string; full: string }[] = useMemo(
+    () =>
+      loadSuggestions(STORAGE_KEY)?.map((suggestion) => ({
+        trim: suggestion.slice(0, 12) + (suggestion.length > 12 ? "..." : ""),
+        full: suggestion,
+      })) || [],
+    [],
+  );
 
   const onSearchToggler = () => {
-    setIsDefaultScreen(prev => !prev);
+    setIsDefaultScreen((prev) => !prev);
   };
 
   return (
@@ -22,7 +29,7 @@ function App() {
           onSearchToggler={onSearchToggler}
         />
       ) : (
-        <SearchWithGrid  onSearchToggler={onSearchToggler} />
+        <SearchWithGrid onSearchToggler={onSearchToggler} />
       )}
     </>
   );
