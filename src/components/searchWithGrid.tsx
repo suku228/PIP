@@ -1,6 +1,7 @@
 import React from "react";
 import { GridComponent } from "./grid.component";
 import SearchInput from "./search.component1";
+import { STORAGE_KEY } from "../constants";
 
 export const SearchWithGrid: React.FC<{ onSearchToggler: () => void }> = ({ onSearchToggler }) => {
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -18,7 +19,7 @@ export const SearchWithGrid: React.FC<{ onSearchToggler: () => void }> = ({ onSe
       >
         Go back
       </button>
-      <SearchInput setSearchTerm={setSearchTerm} onSearch={onSearch} />
+      <SearchInput setSearchTerm={setSearchTerm} onSearch={onSearch} storageKey={STORAGE_KEY} />
       {searchTerm.trim() !== "" && <GridComponent searchTerm={searchTerm} />}
     </>
   );

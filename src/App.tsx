@@ -1,19 +1,17 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import "./App.css";
 import { SearchWithGrid } from "./components/searchWithGrid";
 import { DefaultScreen } from "./components/DefaultScreen";
+import { STORAGE_KEY } from "./constants";
+import { loadSuggestions } from "./helpers/loadSuggestions";
 
 function App() {
   const [isDefaultScreen, setIsDefaultScreen] = React.useState(true);
-  const recentSearches: string[] = [
-    "Leanne Graham",
-    "Ervin Howell",
-    "Clementine Bauch",
-  ];
+  const recentSearches: string[] = useMemo(() => loadSuggestions(STORAGE_KEY), []);
 
   const onSearchToggler = () => {
-    setIsDefaultScreen(false);
+    setIsDefaultScreen(prev => !prev);
   };
 
   return (

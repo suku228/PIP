@@ -17,12 +17,6 @@ export const useFetch = <T>(
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    console.log(
-      "useFetch triggered with url:",
-      url,
-      "and searchTerm:",
-      searchTerm,
-    );
     if (!url || searchTerm.trim() === "") {
       setData(null);
       return;
