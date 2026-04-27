@@ -26,12 +26,21 @@ export const useFetch = <T>(
     const signal = abortController.signal;
 
     const fetchData = async () => {
-      setLoading(true);
+      setLoading(false);
       setError(null);
 
       try {
         // Simulate async behavior with setTimeout
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        await new Promise<void>((resolve, reject) => {
+          const timer = setTimeout(resolve, 500);
+
+          const onAbort = () => {
+            clearTimeout(timer);
+            reject(new DOMException("Aborted", "AbortError"));
+          };
+
+          signal.addEventListener("abort", onAbort, { once: true }); //  auto-removes after firing
+        });
 
         if (signal.aborted) return;
 
